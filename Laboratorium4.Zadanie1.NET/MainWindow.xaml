@@ -3,10 +3,115 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Laboratorium4.Zadanie1.NET"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="File Encryption App" Height="600" Width="600"
+        Background="#F5F5F5"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#007ACC" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Margin" Value="10,0,0,10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="2">
+                            <ContentPresenter Margin="10 5 10 5" HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#005A9E" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#004377" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="Gray" />
+                    <Setter Property="BorderBrush" Value="DarkGray" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="10,10,0,10" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="BorderBrush" Value="#CCC" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="10,10,0,10" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="BorderBrush" Value="#CCC" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+    </Window.Resources>
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="#007ACC" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Content="File Encryption App" FontWeight="Bold" FontSize="18" VerticalAlignment="Center"
+                   Margin="10,0,0,0" Foreground="White" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" />
+            <Button Name="CloseButton" Content="Close" FontSize="16" Click="CloseButton_Click" Grid.Column="1"
+                    Margin="0,0,10,0" />
+        </Grid>
+        <StackPanel Grid.Row="1" Margin="10">
+            <StackPanel Orientation="Horizontal">
+                <Button Name="LoadSettingsButton" Content="Load Settings" Click="LoadSettingsButton_Click" />
+                <Button Name="SaveSettingsButton" Content="Save Settings" Margin="10,0,0,0"
+                        Click="SaveSettingsButton_Click" />
+            </StackPanel>
+            <TextBox Name="FilePathTextBox" Height="30" GotFocus="FilePathTextBox_GotFocus"
+                     LostFocus="FilePathTextBox_LostFocus" TextChanged="FilePathTextBox_TextChanged" />
+            <StackPanel Orientation="Horizontal">
+                <Button Name="BrowseFilesButton" Content="Browse Files" Click="BrowseFilesButton_Click" />
+                <Button Name="BrowseFolderButton" Content="Browse Folder" Click="BrowseFolderButton_Click"
+                        Margin="10,0,0,0" />
+            </StackPanel>
+            <ComboBox Name="EncryptionMethodComboBox" Height="30" Margin="10,10,0,0">
+                <ComboBoxItem Content="AES" IsSelected="True" />
+                <ComboBoxItem Content="DES" />
+                <ComboBoxItem Content="TripleDES" />
+            </ComboBox>
+            <TextBox Name="KeyTextBox" Height="30" GotFocus="KeyTextBox_GotFocus" LostFocus="KeyTextBox_LostFocus"
+                     TextChanged="KeyTextBox_TextChanged" />
+            <TextBox Name="IVTextBox" Height="30" GotFocus="IVTextBox_GotFocus" LostFocus="IVTextBox_LostFocus"
+                     TextChanged="IVTextBox_TextChanged" />
+            <StackPanel Orientation="Vertical">
+                <Button Name="EncryptButton" Content="Encrypt" Click="EncryptButton_Click"
+                        IsEnabled="{Binding CanEncryptFile}" />
+                <Button Content="Upload Encrypted File(s) To Server" Click="UploadButton_Click"
+                        IsEnabled="{Binding CanUploadFile}" />
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <Button Content="Download Encrypted File(s) From Server" Click="DownloadButton_Click" />
+                <TextBox Name="DownloadedFilePathTextBox" Height="30" GotFocus="DownloadedFilePathTextBox_GotFocus"
+                         LostFocus="DownloadedFilePathTextBox_LostFocus"
+                         TextChanged="DownloadedFilePathTextBox_TextChanged" />
+                <Button Name="DecryptButton" Content="Decrypt" Click="DecryptButton_Click"
+                        IsEnabled="{Binding CanDecryptFile}" Margin="10,0,0,10" />
+            </StackPanel>
+            <Button Name="SaveDecryptedFilesButton" Content="Save Decrypted File(s)"
+                    Click="SaveDecryptedFilesButton_Click"
+                    IsEnabled="{Binding CanSaveDecryptedFile}" />
+        </StackPanel>
     </Grid>
 </Window>
